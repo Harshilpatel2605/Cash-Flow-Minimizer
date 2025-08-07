@@ -1,127 +1,69 @@
-# Cash Flow Minimizer - React UI
+# Welcome to the Cash Flow Minimizer System !!
 
-A modern React application that implements a cash flow minimization algorithm to reduce the number of transactions between banks with different payment modes.
+This system minimizes the **number of transactions** among multiple banks in the different corners of the world that use **different modes of payment**. There is one world bank (with all payment modes) to act as an intermediary between banks that have no common mode of payment.
 
-## Features
+# Getting Started
 
-- **Interactive UI**: Beautiful Material-UI based interface with step-by-step workflow
-- **Bank Management**: Add banks and their supported payment types
-- **Transaction Input**: Define transactions between banks
-- **Optimization Results**: View minimized transactions with savings statistics
-- **World Bank Integration**: Automatic intermediary bank for incompatible payment types
+Let's take an example. say we have the following banks:
+1. Bank_of_America (World bank)
+2. Wells_Fargo
+3. Royal_Bank_of_Canada
+4. Westpac
+5. National_Australia_Bank
+6. Goldman_Sachs
 
-## How It Works
+Following are the payments to be done:\
+&emsp;&emsp;&emsp;    **Debtor Bank**&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;                **Creditor Bank** &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; **Amount**
+1. Goldman_Sachs   &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;             Bank_of_America &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp;             Rs 100
+2. Goldman_Sachs   &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;              Wells_Fargo &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;                Rs 300
+3. Goldman_Sachs   &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;              Royal_Bank_of_Canada  &emsp;&emsp;&emsp;&emsp;&nbsp;      Rs 100
+4. Goldman_Sachs   &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;              Westpac &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp; Rs 100
+5. National_Australia_Bank &emsp;&emsp;&nbsp;&nbsp;       Bank_of_America &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp; Rs 300
+6. National_Australia_Bank &emsp;&emsp;&nbsp;&nbsp;       Royal_Bank_of_Canada &emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Rs 100
+7. Bank_of_America         &emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp;       Wells_Fargo &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp; Rs 400
+8. Wells_Fargo             &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp;       Royal_Bank_of_Canada &emsp;&emsp;&emsp;&emsp;&nbsp; Rs 200
+9. Royal_Bank_of_Canada    &emsp;&emsp;&nbsp;&nbsp;&nbsp;&nbsp;      Westpac &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp; Rs 500
 
-The application uses the same algorithm as the original C++ implementation:
 
-1. **Bank Setup**: Define banks and their supported payment types
-2. **Transaction Input**: Enter all transactions between banks
-3. **Optimization**: The algorithm finds the minimum number of transactions needed
-4. **Results**: View the optimized transaction list with statistics
+This is represented below as a directed graph with the directed edge representing debts.
+![image](https://user-images.githubusercontent.com/54183085/110007387-9c625100-7d40-11eb-9128-29073ea4b3f3.png)
 
-## Getting Started
+**But there's a catch!!**
+Each Bank only supports a set of modes of payments and can _make_ or _receive_ payments **only** via those. Only World Bank suppports **all** modes of payments.
+In our current example we have only three payment modes :
+1. Google_Pay
+2. AliPay
+3. Paytm
 
-### Prerequisites
+Following is the list of Banks and their supported payment modes :
+1. Bank_of_America &emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;- &emsp; Google_Pay, AliPay, Paytm
+2. Wells_Fargo &emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;&emsp;&nbsp;- &emsp; Google_Pay, AliPay
+3. Royal_Bank_of_Canada &nbsp;&emsp;&nbsp;&nbsp;&nbsp;- &emsp; AliPay
+4. Westpac &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp;&nbsp; - &emsp; Google_Pay, Paytm
+5. Goldman_Sachs &emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;- &emsp; Paytm
+6. National_Australia_Bank &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - &emsp; AliPay, Paytm  
 
-- Node.js (version 14 or higher)
-- npm or yarn
+To pick the first Bank, we calculate the **net amount** for every Bank by using the below formula and store them in list:
 
-### Installation
+net amount = [Sum of all **credits**(_amounts to be received_)] - [Sum of all **debits**(_amounts to pay_)]
 
-1. Navigate to the project directory:
-   ```bash
-   cd cash-flow-ui
-   ```
+Now the idea is that we are finding the bank which has _minimum_ net amount(_max debtor_) (_say Bank X, net amount x_) and then finding the bank which has the _maximum_ net amount( _max creditor_) (_say Bank Y, net amount y_) and also has a common payment mode (_say M1_) with the former bank. Then we find _minimum_ of absolute value of x and y, lets call it z.\
+Now X pays the amount z to Y. Then 3 cases may arrived:
+1. If (magnitude of x) < y  =>  X is completely settled and so removed from the list.
+2. If (magnitude of x) > y  =>  Y is completely settled and so removed from the list.
+3. If (magnitude of x) = y  =>  X and Y both are completely settled and so both are removed from the list.
 
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
+The same process is repeated for the remaining banks.\
+For the current example, the transactions for minimum cash flow are as follows:
 
-3. Start the development server:
-   ```bash
-   npm start
-   ```
+![image](https://user-images.githubusercontent.com/54183085/110007435-aab06d00-7d40-11eb-8e0c-ea5c7ec762a3.png)
 
-4. Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+So this is the required answer.
 
-## Usage
+# How to Use?
+This system is completely **menu-driven**. So when you will run the C++ Application, it will guide you and show you the final output.\
+Below is the execution of our current example:
+![image](https://user-images.githubusercontent.com/54183085/110011598-a33f9280-7d45-11eb-9499-a2868924cefd.png)
 
-### Step 1: Setup Banks
-- The World Bank is pre-configured with all payment types
-- Add additional banks with their specific payment types
-- Each bank can have multiple payment types (e.g., Google Pay, PayTM, UPI)
-
-### Step 2: Add Transactions
-- Define transactions between banks
-- Specify debtor (owes money), creditor (receives money), and amount
-- Add multiple transactions as needed
-
-### Step 3: View Results
-- The algorithm calculates the minimum transactions needed
-- View optimization statistics and detailed transaction list
-- See how many transactions were saved
-
-## Example
-
-**Input:**
-- World Bank: Google Pay, PayTM
-- Bank B: Google Pay
-- Bank C: Google Pay
-- Bank D: PayTM
-- Bank E: PayTM
-
-**Transactions:**
-- Bank B → World Bank: ₹300
-- Bank C → World Bank: ₹700
-- Bank D → Bank B: ₹500
-- Bank E → Bank B: ₹500
-
-**Result:**
-- Minimized to fewer transactions using optimal payment types
-- Shows exact transactions needed to settle all debts
-
-## Technology Stack
-
-- **React 18** with TypeScript
-- **Material-UI (MUI)** for components and styling
-- **Custom Algorithm** ported from C++ to TypeScript
-
-## Project Structure
-
-```
-src/
-├── components/
-│   ├── BankInput.tsx          # Bank setup component
-│   ├── TransactionInput.tsx   # Transaction input component
-│   └── ResultsDisplay.tsx     # Results display component
-├── utils/
-│   └── cashFlowMinimizer.ts   # Core algorithm implementation
-├── types.ts                   # TypeScript interfaces
-└── App.tsx                   # Main application component
-```
-
-## Available Scripts
-
-- `npm start` - Runs the app in development mode
-- `npm test` - Launches the test runner
-- `npm run build` - Builds the app for production
-- `npm run eject` - Ejects from Create React App (not recommended)
-
-## Algorithm Details
-
-The cash flow minimizer uses a greedy algorithm that:
-
-1. Calculates net amounts for each bank
-2. Finds banks with minimum and maximum net amounts
-3. Matches banks with common payment types
-4. Uses the World Bank as intermediary when needed
-5. Minimizes the total number of transactions
-
-## Contributing
-
-Feel free to submit issues and enhancement requests!
-
-## License
-
-This project is open source and available under the MIT License.
+Thank you!!
+Happy learning :)
