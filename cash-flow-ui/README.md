@@ -28,7 +28,7 @@ Following are the payments to be done:\
 This is represented below as a directed graph with the directed edge representing debts.
 ![image](https://user-images.githubusercontent.com/54183085/110007387-9c625100-7d40-11eb-9128-29073ea4b3f3.png)
 
-**But there's a catch!!**
+**There's a Catch:**
 Each Bank only supports a set of modes of payments and can _make_ or _receive_ payments **only** via those. Only World Bank suppports **all** modes of payments.
 In our current example we have only three payment modes :
 1. Google_Pay
@@ -64,6 +64,3 @@ So this is the required answer.
 This system is completely **menu-driven**. So when you will run the C++ Application, it will guide you and show you the final output.\
 Below is the execution of our current example:
 ![image](https://user-images.githubusercontent.com/54183085/110011598-a33f9280-7d45-11eb-9499-a2868924cefd.png)
-
-Thank you!!
-Happy learning :)
