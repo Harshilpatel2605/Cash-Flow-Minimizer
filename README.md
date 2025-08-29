@@ -1,5 +1,5 @@
 # Welcome to the Cash Flow Minimizer System README !!
-
+![image](cash-flow-react/Cash-flow-minimizer.png)
 This system minimizes the **number of transactions** among multiple banks in the different corners of the world that use **different modes of payment**. There is one world bank (with all payment modes) to act as an intermediary between banks that have no common mode of payment.
 
 # Getting Started
@@ -62,4 +62,3 @@ So this is the required answer.
 
 # How to Use?
 This system is now built as a React web application with a clean and interactive UI.
-![image](cash-flow-react/Cash-flow-minimizer.png)
