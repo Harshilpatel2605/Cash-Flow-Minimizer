@@ -203,7 +203,7 @@ int main()
     for(int i=0; i<numBanks;i++){
         if(i==0){
             cout<<"World Bank : ";
-        }
+        }0
         else{
             cout<<"Bank "<<i<<" : ";
         }

@@ -62,4 +62,4 @@ So this is the required answer.
 
 # How to Use?
 This system is now built as a React web application with a clean and interactive UI.
-![image](cash-flow-react\Cash-flow-minimizer.png)
+![image](cash-flow-react/Cash-flow-minimizer.png)
